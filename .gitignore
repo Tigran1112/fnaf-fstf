@@ -1,0 +1,51 @@
+# ========== Unity ==========
+
+# Служебные папки
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+MemoryCaptures/
+
+# IDE
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+
+# Кэш Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.json
+
+# Автоматически генерируемое
+sysinfo.txt
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+
+# Кэш билдов
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+*.xcodeproj
+*.xcworkspace
+
+# Rider
+*.idea/
+*.sln.iml
+
+# Lightmap и GI Cache
+/[Ll]ightmapSnapshot
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+/[Ll]ibrary/GI/*
