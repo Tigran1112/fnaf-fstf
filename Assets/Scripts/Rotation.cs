@@ -19,7 +19,7 @@ public class Rotation : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            if (XRot > 45f) OnFlashlight(FL);
+            if (XRot < 45f) OnFlashlight(FL);
             else if (45f < XRot && XRot < 135f) OnFlashlight(FF);
             else if (135f < XRot) OnFlashlight(FR);
         }
