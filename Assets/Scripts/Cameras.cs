@@ -29,7 +29,7 @@ public class Cameras : MonoBehaviour
         tabletButton.RegisterCallback<PointerEnterEvent>(ChangeVisible);
         next.clicked += () => ChangeCamera(true);
         prev.clicked += () => ChangeCamera(false);
-        Text.text = "CAM:" + currentCameraIndex;
+        Text.text = "CAM:" + currentCameraIndex + 1;
     }
     void ChangeVisible(PointerEnterEvent env)
     {
@@ -39,7 +39,7 @@ public class Cameras : MonoBehaviour
     IEnumerator Open()
     {
         anim.SetBool("IsOpen", true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
 
         cameras[currentCameraIndex].SetActive(true);
         MainCamera.SetActive(false);
@@ -64,7 +64,7 @@ public class Cameras : MonoBehaviour
         if (currentCameraIndex >= cameras.Length) currentCameraIndex = 0;
         else if (currentCameraIndex < 0) currentCameraIndex = cameras.Length - 1;
 
-        Text.text = "CAM:" + currentCameraIndex;
+        Text.text = "CAM:" + currentCameraIndex + 1;
         cameras[currentCameraIndex].SetActive(true);
 
         Invoke("OffTrans", 1f);
