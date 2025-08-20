@@ -1,80 +1,101 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class Freddy : MonoBehaviour
 {
     public GameObject[] pos;
     private int index;
 
+    [Range(0, 20)]
     public int AI;
     private float _minDelay, _maxDelay, _chance;
 
     public GameObject Camera;
 
-    public UIDocument doc;
-    private VisualElement trans;
-
+    public GameObject trans;
     public Animator run, jumpscare;
 
-    private int timeToRun;
+    private bool isAttacking;
+    private bool returning;
+
+    public GameObject tab;
+    public Cameras cameras;
+
     void Awake()
     {
+        foreach (var c in pos) c.SetActive(false);
         if (AI == 0) return;
+
         float t = (AI - 1f) / 19f;
         float s = Mathf.SmoothStep(15f, 1f, t);
         _minDelay = Mathf.Lerp(15f, 1f, s);
         _maxDelay = Mathf.Lerp(25f, 7f, s);
         _chance = Mathf.RoundToInt(Mathf.Lerp(30f, 100f, s));
+
         index = pos.Length - 1;
-        foreach (var c in pos) c.SetActive(false);
         pos[index].SetActive(true);
-        trans = doc.rootVisualElement.Q<VisualElement>("Trans");
 
         InvokeRepeating("Walk", Random.Range(_minDelay, _maxDelay), Random.Range(_minDelay, _maxDelay));
+    }
 
-    }
-    IEnumerator Trans()
+    IEnumerator TransEffect()
     {
-        trans.style.display = DisplayStyle.Flex;
+        trans.SetActive(true);
         yield return new WaitForSeconds(1f);
-        trans.style.display = DisplayStyle.None;
+        trans.SetActive(false);
     }
+
     void Update()
     {
-        if (Camera.activeSelf)
+        if (Camera.activeSelf && !returning && index != 0)
         {
-            timeToRun += (int)Mathf.Round(Time.deltaTime);
-            if (timeToRun == 3)
-            {
-                StartCoroutine(Trans());
-                pos[index].SetActive(false);
-                index = pos.Length - 1;
-                pos[index].SetActive(true);
-            }
+            returning = true;
+            StartCoroutine(ReturnToStart());
         }
     }
+
     void Walk()
     {
-        if (Random.Range(0, 101) <= _chance && index != 0)
+        if (Random.Range(0, 101) <= _chance && index != 0 && !returning)
         {
-            StartCoroutine(Trans());
+            StartCoroutine(TransEffect());
             pos[index].SetActive(false);
             index--;
             pos[index].SetActive(true);
         }
-        if (index == 0)
+
+        if (index == 0 && !isAttacking)
         {
-            Invoke("Attack", Random.Range(25, 60));
+            isAttacking = true;
+            StartCoroutine(Attack());
         }
     }
+
+    IEnumerator ReturnToStart()
+    {
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(TransEffect());
+        pos[index].SetActive(false);
+        index = pos.Length - 1;
+        pos[index].SetActive(true);
+        returning = false;
+    }
+
     IEnumerator Attack()
     {
+        float delay = Random.Range(20f, 60f);
+        yield return new WaitForSeconds(delay);
+
         run.SetTrigger("Run");
         yield return new WaitForSeconds(2f);
+
+        cameras.Close();
+        Destroy(tab);
+
         jumpscare.SetTrigger("Scream");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
+
         SceneManager.LoadScene("Dead");
     }
 }

@@ -10,7 +10,10 @@ public class Cameras : MonoBehaviour
     public Animator anim;
 
     public UIDocument doc;
-    private VisualElement tabletButton, minimap, translate;
+    private VisualElement tabletButton, minimap;
+    
+    public GameObject[] trans;
+
     private Button next, prev;
     private Button Text;
     void Awake()
@@ -20,16 +23,16 @@ public class Cameras : MonoBehaviour
         minimap = root.Q<VisualElement>("Minimap");
         next = root.Q<Button>("Next");
         prev = root.Q<Button>("Back");
-        translate = root.Q<VisualElement>("Trans");
         Text = root.Q<Button>("CamNum");
 
         minimap.style.display = DisplayStyle.None;
-        translate.style.display = DisplayStyle.None;
+        foreach (var t in trans) t.SetActive(false);
+        foreach (var c in cameras) c.SetActive(false);
 
         tabletButton.RegisterCallback<PointerEnterEvent>(ChangeVisible);
         next.clicked += () => ChangeCamera(true);
         prev.clicked += () => ChangeCamera(false);
-        Text.text = "CAM:" + currentCameraIndex + 1;
+        Text.text = "CAM:" + (currentCameraIndex + 1);
     }
     void ChangeVisible(PointerEnterEvent env)
     {
@@ -45,7 +48,7 @@ public class Cameras : MonoBehaviour
         MainCamera.SetActive(false);
         minimap.style.display = DisplayStyle.Flex;
     }
-    void Close()
+    public void Close()
     {
         MainCamera.SetActive(true);
         cameras[currentCameraIndex].SetActive(false);
@@ -55,7 +58,7 @@ public class Cameras : MonoBehaviour
     }
     void ChangeCamera(bool next)
     {
-        translate.style.display = DisplayStyle.Flex;
+        trans[currentCameraIndex].SetActive(true);
         cameras[currentCameraIndex].SetActive(false);
 
         if (next) currentCameraIndex++;
@@ -64,10 +67,10 @@ public class Cameras : MonoBehaviour
         if (currentCameraIndex >= cameras.Length) currentCameraIndex = 0;
         else if (currentCameraIndex < 0) currentCameraIndex = cameras.Length - 1;
 
-        Text.text = "CAM:" + currentCameraIndex + 1;
+        Text.text = "CAM:" + (currentCameraIndex + 1);
         cameras[currentCameraIndex].SetActive(true);
 
         Invoke("OffTrans", 1f);
     }
-    void OffTrans() => translate.style.display = DisplayStyle.None;
+    void OffTrans() => trans[currentCameraIndex].SetActive(false);
 }

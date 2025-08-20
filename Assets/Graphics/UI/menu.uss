@@ -1,0 +1,8 @@
+:root {
+}
+
+.button:hover {
+    font-size: 25px;
+    color: rgb(97, 97, 97);
+    -unity-text-align: upper-center;
+}

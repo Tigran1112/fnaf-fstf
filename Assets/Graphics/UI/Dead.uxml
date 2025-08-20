@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1;"/>
+    <ui:Label text="Game Over" name="Label" style="align-self: flex-end; align-items: flex-end; align-content: flex-end; justify-content: flex-end; -unity-text-align: upper-left; color: rgb(255, 255, 255); font-size: 30px; -unity-font-definition: url(&quot;project://database/Assets/Graphics/UI/Font/PixelifySans-VariableFont_wght.ttf?fileID=12800000&amp;guid=28bbd8da2788a3448a853baaaa209efd&amp;type=3#PixelifySans-VariableFont_wght&quot;);"/>
+</ui:UXML>
