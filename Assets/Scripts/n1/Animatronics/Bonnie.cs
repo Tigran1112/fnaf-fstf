@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class Bonnie : MonoBehaviour
 {
-    public GameObject[] pos;
-    private int index;
-
     [Range(0, 20)]
     public int AI;
     private float _minDelay, _maxDelay, _chance;
+
+    public GameObject[] pos;
+    private int index;
 
     public GameObject[] flashlight;
 
@@ -21,12 +21,17 @@ public class Bonnie : MonoBehaviour
 
     public GameObject tab;
     public Cameras cameras;
+    public GameObject UI;
 
     private float timeToRun;
 
     void Awake()
     {
         foreach (var c in pos) c.SetActive(false);
+
+        index = pos.Length - 1;
+        pos[index].SetActive(true);
+
         if (AI == 0) return;
 
         float t = (AI - 1f) / 19f;
@@ -34,9 +39,6 @@ public class Bonnie : MonoBehaviour
         _minDelay = Mathf.Lerp(15f, 1f, s);
         _maxDelay = Mathf.Lerp(25f, 7f, s);
         _chance = Mathf.RoundToInt(Mathf.Lerp(30f, 100f, s));
-
-        index = pos.Length - 1;
-        pos[index].SetActive(true);
 
         InvokeRepeating("Walk", Random.Range(_minDelay, _maxDelay), Random.Range(_minDelay, _maxDelay));
     }
@@ -95,6 +97,7 @@ public class Bonnie : MonoBehaviour
 
         cameras.Close();
         Destroy(tab);
+        Destroy(UI);
 
         jumpscare.SetTrigger("Scream");
         yield return new WaitForSeconds(1.5f);

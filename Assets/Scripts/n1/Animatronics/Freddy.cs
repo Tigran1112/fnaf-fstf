@@ -21,10 +21,15 @@ public class Freddy : MonoBehaviour
 
     public GameObject tab;
     public Cameras cameras;
+    public GameObject UI;
 
     void Awake()
     {
         foreach (var c in pos) c.SetActive(false);
+
+        index = pos.Length - 1;
+        pos[index].SetActive(true);
+        
         if (AI == 0) return;
 
         float t = (AI - 1f) / 19f;
@@ -32,9 +37,6 @@ public class Freddy : MonoBehaviour
         _minDelay = Mathf.Lerp(15f, 1f, s);
         _maxDelay = Mathf.Lerp(25f, 7f, s);
         _chance = Mathf.RoundToInt(Mathf.Lerp(30f, 100f, s));
-
-        index = pos.Length - 1;
-        pos[index].SetActive(true);
 
         InvokeRepeating("Walk", Random.Range(_minDelay, _maxDelay), Random.Range(_minDelay, _maxDelay));
     }
@@ -92,6 +94,7 @@ public class Freddy : MonoBehaviour
 
         cameras.Close();
         Destroy(tab);
+        Destroy(UI);
 
         jumpscare.SetTrigger("Scream");
         yield return new WaitForSeconds(1.5f);
